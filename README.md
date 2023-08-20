@@ -21,5 +21,5 @@ Our research project incorporates a range of advanced features that showcase the
 Our findings and contributions are encapsulated in a published paper, accessible through the following link: [AI Fencing Recommender using Cloud Technology and IoT (Page 6)](https://img1.wsimg.com/blobby/go/9191e826-b8e2-4be4-9c2c-09e8c7fc1375/downloads/Issue%20_3.pdf?ver=1685207117282.). This paper underscores the significance of our project and its impact on fencing action analysis.
 
 ## Created By
-This project was developed in collaboration with NYU CS Prof. Jean-Claude Franchitti by [Nilansh](https://github.com/ndg24).
+This project was developed in collaboration with NYU CS Prof. Jean-Claude Franchitti by [Nilansh Dey Ghosh](https://github.com/ndg24).
 
