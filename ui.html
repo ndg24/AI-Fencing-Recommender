@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Classification UI</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<h1>Image Classification</h1>
+<input type="file" id="imageInput" accept="image/*">
+<button onclick="classifyImage()">Classify</button>
+<div id="predictionResults" style="display: none;">
+    <h2>Top Predictions:</h2>
+    <ul id="predictionsList"></ul>
+</div>
+<script>
+    function classifyImage() {
+        var imageInput = document.getElementById("imageInput");
+        var predictionResults = document.getElementById("predictionResults");
+        var predictionsList = document.getElementById("predictionsList");
+        
+        predictionResults.style.display = "none";
+        predictionsList.innerHTML = "";
+        
+        if (imageInput.files.length === 0) {
+            alert("Please select an image.");
+            return;
+        }
+        
+        var file = imageInput.files[0];
+        var formData = new FormData();
+        formData.append("image", file);
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/classify", true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var predictions = JSON.parse(xhr.responseText);
+                predictions.forEach(function(prediction) {
+                    var listItem = document.createElement("li");
+                    listItem.textContent = prediction.label + " (Score: " + prediction.score.toFixed(5) + ")";
+                    predictionsList.appendChild(listItem);
+                });
+                predictionResults.style.display = "block";
+            } else {
+                alert("Error: " + xhr.statusText);
+            }
+        };
+        xhr.onerror = function() {
+            alert("Network error");
+        };
+        xhr.send(formData);
+    }
+</script>
+</body>
+</html>

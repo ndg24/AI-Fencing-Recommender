@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#predictionResults {
+    margin-top: 20px;
+}
+
+#predictionsList {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+#predictionsList li {
+    margin-bottom: 10px;
+}
