@@ -1,7 +1,7 @@
 # AI Fencing Reccommender
 
 ## Introduction
-This research project, conducted in collaboration with NYU CS Prof. Jean-Claude Franchitti, focuses on developing intelligent Autonomous Networked (IAN) solutions using cloud-based machine learning, deep learning techniques, and IOT. The project aims to create advanced systems capable of analyzing fencing actions in video clips, providing valuable feedback to fencers through the use of sophisticated recommender systems.
+This research project, conducted in collaboration with NYU CS Prof. Jean-Claude Franchitti, focuses on developing intelligent Autonomous Networked solutions using cloud-based machine learning, deep learning techniques, and IOT. The project aims to create advanced systems capable of analyzing fencing actions in video clips, providing valuable feedback to fencers through the use of sophisticated recommender systems.
 
 - **TensorFlow**: The industry-standard deep learning framework empowers us to construct and train complex neural networks, enabling high-level action classification.
 - **OpenCV**: Utilizing OpenCV, we conduct sophisticated video analysis, including Optical Flow techniques, to gain deeper insights into fencing maneuvers.
