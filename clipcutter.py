@@ -10,6 +10,8 @@ from pylab import *
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
+
+
 green_box = cv2.imread("greenbox.png")
 red_box = cv2.imread("redbox.png")
 white_box = cv2.imread("whitebox.png")
