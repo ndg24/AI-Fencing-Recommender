@@ -1,77 +1,73 @@
-import cv2
-import tensorflow as tf
-import numpy as np
-import argparse
-import time
-import cv
-import subprocess as sp
 import os
-from pylab import *
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 
-green_box = cv2.imread("greenbox.png")
-red_box = cv2.imread("redbox.png")
-white_box = cv2.imread("whitebox.png")
+import cv2
+import numpy as np
 
-import cPickle
-with open('logistic_classifier_0-15.pkl', 'rb') as fid:
-    model = cPickle.load(fid)
+from model_compat import load_logistic_classifier
+
+green_box = cv2.imread("box_green.png")
+red_box = cv2.imread("box_red.png")
+white_box = cv2.imread("box_white.png")
+
+model = load_logistic_classifier()
+
 
 def check_lights(frame):
-    leftOff = False
-    leftOn = False
-    rightOff = False
-    rightOn = False
     string = ""
-    if (np.sum(abs(frame[330:334, 140:260].astype(int) - red_box.astype(int))) <= 40000):
+    if np.sum(abs(frame[330:334, 140:260].astype(int) - red_box.astype(int))) <= 40000:
         string = string + "On"
-    elif (np.sum(abs(frame[337:348, 234:250].astype(int) - white_box.astype(int))) <= 7000):
+    elif np.sum(abs(frame[337:348, 234:250].astype(int) - white_box.astype(int))) <= 7000:
         string = string + "Off"
     else:
         string = string + "No"
     string = string + "-"
-    if (np.sum(abs(frame[330:334, 380:500].astype(int) - green_box.astype(int))) <= 40000):
+    if np.sum(abs(frame[330:334, 380:500].astype(int) - green_box.astype(int))) <= 40000:
         string = string + "On"
-    elif (np.sum(abs(frame[337:348, 390:406].astype(int) - white_box.astype(int))) <= 7000):
+    elif np.sum(abs(frame[337:348, 390:406].astype(int) - white_box.astype(int))) <= 7000:
         string = string + "Off"
     else:
         string = string + "No"
     return string
+
 
 def check_score(frame):
     left = model.predict(frame[309:325, 265:285].reshape(1, -1))
     right = model.predict(frame[309:325, 355:375].reshape(1, -1))
     return left, right
 
+
 def caption(hit_type, left, right, update_left, update_right):
-    caption = "None"
+    result = "None"
     if hit_type == "On-On":
         if update_left - left == 1 and update_right - right == 0:
-            caption = "L"
+            result = "L"
         if update_left - left == 0 and update_right - right == 1:
-            caption = "R"
+            result = "R"
         if update_left - left == 0 and update_right - right == 0:
-            caption = "T"
+            result = "T"
     if hit_type == "On-Off":
         if update_left - left == 1 and update_right - right == 0:
-            caption = "L"
+            result = "L"
         if update_left - left == 0 and update_right - right == 0:
-            caption = "R"
+            result = "R"
     if hit_type == "Off-On":
         if update_left - left == 0 and update_right - right == 1:
-            caption = "R"
+            result = "R"
         if update_left - left == 0 and update_right - right == 0:
-            caption = "L"
-    return caption
+            result = "L"
+    return result
+
+
+os.makedirs("videos", exist_ok=True)
+os.makedirs("training_quarantine", exist_ok=True)
 
 for i in os.listdir(os.getcwd() + "/videos"):
-    if i.endswith(".mp4"): 
+    if i.endswith(".mp4"):
         match_number = int(i.split("-")[0])
         hit_number = int(i.split("-")[1].replace(".mp4", ""))
         cap = cv2.VideoCapture("videos/" + i)
-        cap_end_point = int(cap.get(cv2.cv.CV_CAP_PROP_FRAME_COUNT))
-        cap.set(1, cap_end_point - 1)  
+        cap_end_point = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        cap.set(1, cap_end_point - 1)
         ret, frame = cap.read()
         hit_type = check_lights(frame)
         left, right = check_score(frame)
@@ -86,7 +82,7 @@ for i in os.listdir(os.getcwd() + "/videos"):
                 update_left, update_right = check_score(frame)
                 cap.release()
                 priority = caption(hit_type, left, right, update_left, update_right)
-                if priority != 'None':
+                if priority != "None":
                     os.rename("videos/" + i, "training_quarantine/" + priority + i)
         continue
     else:

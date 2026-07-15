@@ -1,3 +1,8 @@
 tensorflow
 pillow
 numpy
+opencv-python
+hickle
+scikit-learn
+imageio-ffmpeg
+yt-dlp
